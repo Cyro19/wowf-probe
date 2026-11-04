@@ -105,6 +105,12 @@ local function ProbePlatform()
     local ok, region = pcall(GetCurrentRegion)
     Record("region", nil, "GetCurrentRegion = " .. tostring(ok and region or ("error: " .. tostring(region)))
         .. " (old AceDB broke here on beta)")
+    Record("forced-restrictions", nil, string.format(
+        "restriction-sim CVars: combat=%s map=%s encounter=%s pvp=%s",
+        tostring(GetCVar("addonCombatRestrictionsForced")),
+        tostring(GetCVar("addonMapRestrictionsForced")),
+        tostring(GetCVar("addonEncounterRestrictionsForced")),
+        tostring(GetCVar("addonPvPMatchRestrictionsForced"))))
 end
 
 local function ProbeAuras()

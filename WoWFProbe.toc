@@ -1,0 +1,10 @@
+## Interface: 16001
+## Title: WoWF Probe
+## Notes: Launch-day capability probe for WoW: Forever. /wowfprobe
+## Author: Cyro
+## Version: 1.0.0
+## SavedVariables: WoWFProbeDB
+## IconTexture: Interface\Icons\INV_Misc_QuestionMark
+## AddonCompartmentFunc: WoWFProbe_OnCompartmentClick
+
+WoWFProbe.lua

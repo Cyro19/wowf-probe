@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'WoWFProbe.toc'
+      - 'WoWFProbe.lua'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version from TOC
+        id: meta
+        run: |
+          VER=$(grep -m1 '^## Version:' WoWFProbe.toc | sed 's/^## Version: *//' | tr -d '\r' | xargs)
+          if [ -z "$VER" ]; then echo "no ## Version in TOC"; exit 1; fi
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+
+      - name: Package addon
+        run: |
+          mkdir -p package/WoWFProbe
+          cp WoWFProbe.toc WoWFProbe.lua package/WoWFProbe/
+          cd package && zip -r ../WoWFProbe.zip WoWFProbe
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.meta.outputs.version }}
+          name: WoWFProbe v${{ steps.meta.outputs.version }}
+          files: WoWFProbe.zip
+          fail_on_unmatched_files: true
